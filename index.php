@@ -1,74 +1,77 @@
+<?php 
+    declare(strict_types = 1);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>user_def_fcts</title>
 </head>
 <body>
     <?php 
-        $string = 'hello world';
 
-        /* STRING FUNCTIONS */
+        function sayHello(string $name = "user") {
+            echo "Hello $name !";
+        }
+        sayHello();
+        sayHello("rayen");
 
-        echo strlen($string); // length (spaces included)
-        echo "<br>";
-        echo strpos($string, 'e'); // position of 'e' in $string (index from 0)
-        echo "<br>";
-        echo str_replace('world', 'rayen', $string); // replace
-        echo "<br>";
-        echo strtoupper($string); // lowercase / uppercase
-        echo "<br>";
+        // indicate the type you only accept 
+        // activate strict types to enable this type declaration
+        // = "user" is the default value
 
-        /* SUBSTRING FUNCTIONS */
+        //sayHello(123); says error now
 
-        echo substr($string, 0, 5); // substring
-        // 0 : initial position    |   5 : length (5 not included)
-        echo "<br>";
-        print_r(explode(" ", $string)); // like splice() in js
-        echo "<br>";
+        /* SCOPES */
 
-        /* MATH FUNCTIONS */
+        $test = "I am test";
 
-        $number = -5.5;
+        function calculate(int $x, int $y) {
+            global $test;
+            $result = $x + $y;
+            return $test; // undefined here, need to import it into this scope
+        }
 
-        echo abs($number); // absolute value
-        echo "<br>";
-        echo round($number); // >= .5 -> next value (5.5 => 6)
-        echo "<br>";
-        echo pow(8, 2); // power x ** y
-        echo "<br>";
-        echo sqrt(64); // racine carré
-        echo "<br>";
-        echo rand(1, 50); // random number between x and y
-        echo "<br>";
+        echo calculate(1, 5); // I am test
 
-        /* ARRAY FUNCTIONS */
+        /* STATIC VARIABLES */
 
-        $array = ['hello', 'world', ':)'];
-        $array2 = ['rayen', 'salhi'];
+        function st() {
 
-        echo is_array($array); // 1 : true  | 0 : false
-        echo "<br>";
-        array_push($array, "!"); // push : add from end
-        array_pop($array); // pop : remove from end
-        print_r(array_reverse($array)); // reverse
-        echo "<br>";
-        print_r(array_merge($array, $array2)); // merge : add $array2 after $array
-        echo "<br>";
+            static $x = 0;
+            $x++;
+            echo $x;
+            
+        }
 
-        /* DATE / TIME FUNCTIONS */
+        st();
+        st();
+        st();
 
-        echo date('Y-m-d  H:i:s'); // (y : 24)  (Y : 2024)  (i : minutes)
-        echo time(); // in seconds since epoch time
-        echo "<br>";
+        // a normal variable is read as a block of code
+        // static variable is shared among all fct calls
 
-        /* TIMESTAMP FUNCTIONS */
+        /* CLASSES */
 
-        $date = '2024-11-14  18:11:32';
+        class myClass {
+            static public $x = "hello, world!";
+            public function sayHello() {
+                echo $this -> x;
+            }
+        }
+        echo myClass::$x;
+        // can't access the variable x from outside, unless it is static
 
-        echo strtotime($date); // turned into seconds since epoch time
-        echo "<br>";
+        /* CONSTANTS */
+
+        const p = 3.14;
+        define("pi", 3.14);
+
+        echo p;
+        echo pi;
+
+        // constants are accessible in local scopes
     ?>
 </body>
 </html>
